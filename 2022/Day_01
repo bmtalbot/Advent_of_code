@@ -1,0 +1,35 @@
+## SOLVED!
+
+# DAY 1
+
+In case the Elves get hungry and need extra snacks, they need to know which Elf to ask: they'd like to know how many Calories are being carried by the Elf carrying the most Calories. In the example above, this is 24000 (carried by the fourth Elf).
+
+Find the Elf carrying the most Calories. How many total Calories is that Elf carrying?
+
+```{r}
+library(data.table)
+library(RCurl)
+library(readr)
+
+## READ IN THE DATA
+day1input <- read_delim('https://raw.githubusercontent.com/bmtalbot/Advent_of_code/main/2022/input.txt', delim = "\n", skip_empty_rows = FALSE, col_names = FALSE )
+
+## COUNT THE NUMBER OF EMPTY ROWS TO GET THE NUMBER OF ELVES WE'RE DEALING WITH
+
+sum(is.na(day1input$X1)) + 1
+## 264
+
+## SUM OF THE CALORIES
+sum(day1input$X1, na.rm = TRUE)
+
+## FIND THE ELF WITH THE MOST CALORIES
+
+day1input <- day1input %>% mutate(elf = 0)
+
+for (i in day1input$X1) {
+day1input$elf2 <- ifelse(!is.na(day1input$X1), (day1input$X1 + shift(day1input$elf2)), 0) 
+}
+
+max(day1input$elf2, na.rm = TRUE)
+
+```
